@@ -1,0 +1,7 @@
+{
+    "projectName": "BlockChain.ShareToken",
+    "namespace": "BlockChain.ShareToken.Contract",
+    "lang":0,
+    "autoCodeGen":true,
+    "projectPath": "../Contract"
+}

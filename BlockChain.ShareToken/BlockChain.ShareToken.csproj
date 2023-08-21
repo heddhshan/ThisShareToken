@@ -1,0 +1,192 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Contract\ABDKMath64x64\**" />
+    <Compile Remove="Contract\Address\**" />
+    <Compile Remove="Contract\artifacts\**" />
+    <Compile Remove="Contract\bin\**" />
+    <Compile Remove="Contract\Context\**" />
+    <Compile Remove="Contract\DivShareToken\**" />
+    <Compile Remove="Contract\ERC20\**" />
+    <Compile Remove="Contract\IDivShareTokenPair\**" />
+    <Compile Remove="Contract\IERC20\**" />
+    <Compile Remove="Contract\IFlashCallBack\**" />
+    <Compile Remove="Contract\MyDivShareToken\**" />
+    <Compile Remove="Contract\MyShareProfit\**" />
+    <Compile Remove="Contract\openzeppelin\**" />
+    <Compile Remove="Contract\Pausable\**" />
+    <Compile Remove="Contract\SafeERC20\**" />
+    <EmbeddedResource Remove="Contract\ABDKMath64x64\**" />
+    <EmbeddedResource Remove="Contract\Address\**" />
+    <EmbeddedResource Remove="Contract\artifacts\**" />
+    <EmbeddedResource Remove="Contract\bin\**" />
+    <EmbeddedResource Remove="Contract\Context\**" />
+    <EmbeddedResource Remove="Contract\DivShareToken\**" />
+    <EmbeddedResource Remove="Contract\ERC20\**" />
+    <EmbeddedResource Remove="Contract\IDivShareTokenPair\**" />
+    <EmbeddedResource Remove="Contract\IERC20\**" />
+    <EmbeddedResource Remove="Contract\IFlashCallBack\**" />
+    <EmbeddedResource Remove="Contract\MyDivShareToken\**" />
+    <EmbeddedResource Remove="Contract\MyShareProfit\**" />
+    <EmbeddedResource Remove="Contract\openzeppelin\**" />
+    <EmbeddedResource Remove="Contract\Pausable\**" />
+    <EmbeddedResource Remove="Contract\SafeERC20\**" />
+    <None Remove="Contract\ABDKMath64x64\**" />
+    <None Remove="Contract\Address\**" />
+    <None Remove="Contract\artifacts\**" />
+    <None Remove="Contract\bin\**" />
+    <None Remove="Contract\Context\**" />
+    <None Remove="Contract\DivShareToken\**" />
+    <None Remove="Contract\ERC20\**" />
+    <None Remove="Contract\IDivShareTokenPair\**" />
+    <None Remove="Contract\IERC20\**" />
+    <None Remove="Contract\IFlashCallBack\**" />
+    <None Remove="Contract\MyDivShareToken\**" />
+    <None Remove="Contract\MyShareProfit\**" />
+    <None Remove="Contract\openzeppelin\**" />
+    <None Remove="Contract\Pausable\**" />
+    <None Remove="Contract\SafeERC20\**" />
+    <Page Remove="Contract\ABDKMath64x64\**" />
+    <Page Remove="Contract\Address\**" />
+    <Page Remove="Contract\artifacts\**" />
+    <Page Remove="Contract\bin\**" />
+    <Page Remove="Contract\Context\**" />
+    <Page Remove="Contract\DivShareToken\**" />
+    <Page Remove="Contract\ERC20\**" />
+    <Page Remove="Contract\IDivShareTokenPair\**" />
+    <Page Remove="Contract\IERC20\**" />
+    <Page Remove="Contract\IFlashCallBack\**" />
+    <Page Remove="Contract\MyDivShareToken\**" />
+    <Page Remove="Contract\MyShareProfit\**" />
+    <Page Remove="Contract\openzeppelin\**" />
+    <Page Remove="Contract\Pausable\**" />
+    <Page Remove="Contract\SafeERC20\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Remove="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DAL\BasicBusShareTokenFactory_OnNewShareToken.cs" />
+    <Compile Remove="DAL\Token.cs" />
+    <Compile Remove="DAL\TransactionReceipt.cs" />
+    <Compile Remove="DAL\UserTokenApprove.cs" />
+    <Compile Remove="DAL\Web3Url.cs" />
+    <Compile Remove="Model\BasicBusShareTokenFactory_OnNewShareToken.cs" />
+    <Compile Remove="Model\Token.cs" />
+    <Compile Remove="Model\TransactionReceipt.cs" />
+    <Compile Remove="Model\UserTokenApprove.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="favicon.ico" />
+    <None Remove="Image\account.jpg" />
+    <None Remove="Image\Account.png" />
+    <None Remove="Image\account0.jpg" />
+    <None Remove="Image\Auction.png" />
+    <None Remove="Image\database.png" />
+    <None Remove="Image\deployment.png" />
+    <None Remove="Image\dex.png" />
+    <None Remove="Image\div.png" />
+    <None Remove="Image\Dividends.png" />
+    <None Remove="Image\exchange.jfif" />
+    <None Remove="Image\guanyu.png" />
+    <None Remove="Image\multi-language.ico" />
+    <None Remove="Image\Notice.jpg" />
+    <None Remove="Image\s_transfer.png" />
+    <None Remove="Image\token.png" />
+    <None Remove="Image\token1.png" />
+    <None Remove="Image\tools.png" />
+    <None Remove="Image\tuichu.png" />
+    <None Remove="Image\web3.png" />
+    <None Remove="Image\youxi.png" />
+    <None Remove="Image\zhuangtai.png" />
+    <None Remove="SplashScreen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\account0.jpg" />
+    <Resource Include="Image\Auction.png" />
+    <Resource Include="Image\deployment.png" />
+    <Resource Include="Image\Dividends.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlockChain.Common\BlockChain.Common.csproj" />
+    <ProjectReference Include="..\BlockChain.Share\BlockChain.Share.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\account.jpg" />
+    <Resource Include="Image\Account.png" />
+    <Resource Include="Image\database.png" />
+    <Resource Include="Image\dex.png" />
+    <Resource Include="Image\div.png" />
+    <Resource Include="Image\exchange.jfif" />
+    <Resource Include="Image\guanyu.png" />
+    <Resource Include="Image\multi-language.ico" />
+    <Resource Include="Image\Notice.jpg" />
+    <Resource Include="Image\s_transfer.png" />
+    <Resource Include="Image\token.png" />
+    <Resource Include="Image\token1.png" />
+    <Resource Include="Image\tools.png" />
+    <Resource Include="Image\tuichu.png" />
+    <Resource Include="Image\web3.png" />
+    <Resource Include="Image\youxi.png" />
+    <Resource Include="Image\zhuangtai.png" />
+    <Resource Include="SplashScreen.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DataBase\IniDataBase.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DataBase\ShareTokenDb.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DataBase\ShareTokenDb_log.ldf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="TokenIcon\Eth.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TokenIcon\NoJPG.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TokenIcon\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

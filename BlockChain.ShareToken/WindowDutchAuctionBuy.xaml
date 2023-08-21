@@ -1,0 +1,141 @@
+﻿<Window x:Class="BlockChain.ShareToken.WindowDutchAuctionBuy"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BlockChain.ShareToken"
+        xmlns:local_share="clr-namespace:BlockChain.Share;assembly=BlockChain.Share"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"  ResizeMode="NoResize" 
+        Title="购买" Height="600" Width="800">
+
+    <Window.Resources>
+        <local_share:LanguageHelper x:Key="LanguageHelper"></local_share:LanguageHelper>
+
+        <Style x:Key="TextStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style x:Key="NumberStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10,5" />
+            <Setter Property="TextAlignment" Value="Right"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="PasswordBox">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <!--<Setter Property="HorizontalAlignment" Value="Right" />-->
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="35" />
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20"  Background="WhiteSmoke">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" ></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Border  Grid.Row="1" Grid.Column="0"  Background="White"></Border>
+        <Border  Grid.Row="3" Grid.Column="0" Background="White"></Border>
+        <Border  Grid.Row="5" Grid.Column="0"  Background="White"></Border>
+        <Border  Grid.Row="7" Grid.Column="0"  Background="White"></Border>
+        <Border  Grid.Row="9" Grid.Column="0"  Background="White"></Border>
+
+        <Border  Grid.Row="0" Grid.Column="1"  Background="White"></Border>
+        <Border  Grid.Row="2" Grid.Column="1" Background="White"></Border>
+        <Border  Grid.Row="4" Grid.Column="1"  Background="White"></Border>
+        <Border  Grid.Row="6" Grid.Column="1"  Background="White"></Border>
+        <Border  Grid.Row="8" Grid.Column="1"  Background="White"></Border>
+
+        <Label Content="拍卖的Token（TokenSell）:" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Right" Foreground="Red"></Label>
+        <Label x:Name="LabelTokenSell" Grid.Row="0" Grid.Column="1" Foreground="Red"></Label>
+
+        <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='剩余的TokenSell数量:'}" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Right"  Foreground="Red"></Label>
+        <Label x:Name="LabelTokenAmount" Grid.Row="1" Grid.Column="1"   Foreground="Red"></Label>
+
+        
+        <Label Content="支付的Token（TokenBuy）:" Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Right" Foreground="Blue"></Label>
+        <Label x:Name="LabelTokenBuy" Grid.Row="2" Grid.Column="1" Foreground="Blue"></Label>
+
+        <Label Content="Price(1TokenSell=?TokenBuy):" Grid.Row="3" Grid.Column="0"  HorizontalAlignment="Right"></Label>
+        <Label x:Name="LabelPrice" Grid.Row="3" Grid.Column="1" ></Label>
+
+        <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='购买者地址(账户):'}" Grid.Row="4" Grid.Column="0"  HorizontalAlignment="Right"></Label>
+        <ComboBox  x:Name="ComboBoxAddress"  Grid.Row="4" Grid.Column="1" SelectionChanged="OnComboBoxAddressSelectionChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="{Binding  ElementName=ComboBoxAddress, Path=Width}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"></ColumnDefinition>
+                            <ColumnDefinition ></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="{Binding AddressAlias}"></Label>
+                        <Label Grid.Column="1" Content="{Binding Address}" VerticalAlignment="Center"></Label>
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='我的TokenBuy余额:'}" Grid.Row="5" Grid.Column="0"   HorizontalAlignment="Right" Foreground="Blue"></Label>
+        <Label x:Name="LabelTokenBuyBalance" Grid.Row="5" Grid.Column="1" Foreground="Blue"></Label>
+
+        <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='购买TokenSell的数量:'}" Grid.Row="6" Grid.Column="0"  HorizontalAlignment="Right"  Foreground="Red" ></Label>
+        <Grid Grid.Row="6" Grid.Column="1"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" x:Name="TextBoxGetTokenSellAmount" LostFocus="BuyTokenAmountOnLostFocus" Foreground="Red"></TextBox>
+            <Button Grid.Column="1"  Content="Select All" VerticalAlignment="Center" Click="TokenSellAmountSelectAll_Checked"></Button>
+        </Grid>
+
+        <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='支付TokenBuy的数量:'}" Grid.Row="7" Grid.Column="0"  Foreground="Blue"  HorizontalAlignment="Right"></Label>
+        <Grid Grid.Row="7" Grid.Column="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="TextBoxPayTokenBuyAmount" IsReadOnly="True" Foreground="Blue"></TextBox>
+            <Button Grid.Column="1"  Content="Refresh" VerticalAlignment="Center" Click="Refresh_Click"></Button>
+        </Grid>
+        
+        
+        <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='账号密码:'}" Grid.Row="8" Grid.Column="0"  HorizontalAlignment="Right"></Label>
+        <PasswordBox x:Name="PasswordBox1" Grid.Row="8" Grid.Column="1"></PasswordBox>
+
+        <Button x:Name="ButtonDutchAuction" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='购买'}" Click="DoDutchAuctionBuy" ></Button>
+
+    </Grid>
+
+
+</Window>

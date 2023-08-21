@@ -1,0 +1,186 @@
+﻿<Window x:Class="BlockChain.ShareToken.WindowDeployment"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BlockChain.ShareToken" Loaded="Window_Loaded"
+        mc:Ignorable="d" Icon="Image/deployment.png" WindowStartupLocation="CenterScreen"  ResizeMode="NoResize" 
+        Title="测试辅助功能： Contract Deployment and Get Token" Height="600" Width="800">
+
+
+    <Window.Resources>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Margin" Value="2,0" />
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+
+        <Style x:Key="TextStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <Style x:Key="NumberStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10,5" />
+            <Setter Property="TextAlignment" Value="Right"/>
+        </Style>
+
+        <Style x:Key="NumberStyle2" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="CheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+        </Style>
+
+        <Style x:Key="TextStyle2" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="2" />
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+    </Window.Resources>
+        
+
+    <ScrollViewer VerticalScrollBarVisibility="Visible"  >
+
+        <StackPanel>
+
+
+            <Grid  Margin="10"  Background="WhiteSmoke" Height="200">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"  Grid.Column="0" Content="0, Get Test Token" Foreground="Blue"></Label>
+                <Label Grid.Row="1"  Grid.Column="0" Content="DAIToken 合约地址1:" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="1"  Grid.Column="1" x:Name="TextToken1" Text="0x3f5ae1b947dd77d8efe017baf895f6a73cb29ee6" ></TextBox>
+                <Label Grid.Row="2"  Grid.Column="0" Content="UsdtToken 合约地址2:" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="2"  Grid.Column="1" x:Name="TextToken2" Text="0xFFE36E81aB2726f2ba65A6587FA9B7776D3F03a8" ></TextBox>
+                <Button Grid.Row="3"  Grid.Column="0" Grid.ColumnSpan="2" Content="0，得到测试Token" Click="Click_0"  Margin="10,0"></Button>
+            </Grid>
+
+
+            
+            <Grid  Margin="10" Background="WhiteSmoke" Height="160">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"  Grid.Column="0" Content="1, DutchAuction" Foreground="Blue"></Label>
+                <Label Grid.Row="1"  Grid.Column="0" Content="参数 Admin :" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="1"  Grid.Column="1" x:Name="TextBoxAdmin1" ></TextBox>
+                <Label Grid.Row="2"  Grid.Column="0" Content="参数 SuperAdmin :" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="2"  Grid.Column="1" x:Name="TextBoxSuperAdmin1" ></TextBox>
+                <Button Grid.Row="3"  Grid.Column="0" Grid.ColumnSpan="2" Content="部署 1" Click="Click_1"  Margin="10,0"></Button>
+            </Grid>
+
+            <Grid  Margin="10"  Background="WhiteSmoke" Height="200">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"  Grid.Column="0" Content="2, BasicBusShareTokenFactory" Foreground="Blue"></Label>
+                <Label Grid.Row="1"  Grid.Column="0" Content="参数 Admin :" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="1"  Grid.Column="1" x:Name="TextBoxAdmin2" ></TextBox>
+                <Label Grid.Row="2"  Grid.Column="0" Content="参数 SuperAdmin :" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="2"  Grid.Column="1" x:Name="TextBoxSuperAdmin2" ></TextBox>
+                <Label Grid.Row="3"  Grid.Column="0" Content="参数 TokenDutchAuction :" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="3"  Grid.Column="1" x:Name="TextBoxTokenDutchAuction2" ></TextBox>
+                <Button Grid.Row="4"  Grid.Column="0" Grid.ColumnSpan="2" Content="部署 2" Click="Click_2"  Margin="10,0"></Button>
+            </Grid>
+
+            <Grid  Margin="10"  Background="WhiteSmoke" Height="200">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"  Grid.Column="0" Content="3, DivShareTokenPairFactory" Foreground="Blue"></Label>
+                <Label Grid.Row="1"  Grid.Column="0" Content="参数 Admin :" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="1"  Grid.Column="1" x:Name="TextBoxAdmin3" ></TextBox>
+                <Label Grid.Row="2"  Grid.Column="0" Content="参数 SuperAdmin :" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="2"  Grid.Column="1" x:Name="TextBoxSuperAdmin3" ></TextBox>
+                <Button Grid.Row="3"  Grid.Column="0" Grid.ColumnSpan="2" Content="部署 3" Click="Click_3"  Margin="10,0"></Button>
+            </Grid>
+
+
+            <Grid  Margin="10"  Background="WhiteSmoke" Height="200">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0"  Grid.Column="0" Content="4, Test" Foreground="Blue"></Label>
+                <Label Grid.Row="1"  Grid.Column="0" Content="参数 Auction:" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="1"  Grid.Column="1" x:Name="TextBoxAuction" ></TextBox>
+                <Label Grid.Row="2"  Grid.Column="0" Content="参数 ShareTokenPair:" HorizontalAlignment="Right"></Label>
+                <TextBox Grid.Row="2"  Grid.Column="1" x:Name="TextBoxShareTokenPair" ></TextBox>
+                <Button Grid.Row="3"  Grid.Column="0" Grid.ColumnSpan="2" Content="部署 4" Click="Click_4"  Margin="10,0"></Button>
+            </Grid>
+
+
+        </StackPanel>
+
+
+    </ScrollViewer>
+
+</Window>

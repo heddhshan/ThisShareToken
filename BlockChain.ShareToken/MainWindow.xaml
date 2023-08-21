@@ -1,0 +1,1858 @@
+﻿<Window x:Class="BlockChain.ShareToken.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BlockChain.ShareToken"
+        xmlns:local_share="clr-namespace:BlockChain.Share;assembly=BlockChain.Share"
+        mc:Ignorable="d" Closing="Window_Closing"
+        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
+        Title="Share Token and Decentralized Exchange"  MinHeight="800" MinWidth="1280" Height="800" Width="1280">
+
+    <Window.Resources>
+
+        <local_share:LanguageHelper x:Key="LanguageHelper"></local_share:LanguageHelper>
+        <local_share:RRColorConvert x:Key="RRColorConvert"></local_share:RRColorConvert>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Margin" Value="2,0" />
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+
+        <Style x:Key="TextStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <Style x:Key="NumberStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10,5" />
+            <Setter Property="TextAlignment" Value="Right"/>
+        </Style>
+
+        <Style x:Key="NumberStyle2" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+        </Style>
+
+        <!--<Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="5,0" />
+        </Style>-->
+
+        <Style x:Key="CheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+        </Style>
+
+        <Style x:Key="TextStyle2" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="2" />
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid >
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="1"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TabControl Grid.Row="0" Name="TabControlMain" SelectionChanged="OnTabControlSelectionChanged">
+
+                <TabItem  Width="160">
+
+                    <TabItem.Header >
+                        <Grid  HorizontalAlignment="Left"  Width="150">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Source="Image\exchange.jfif" Width="30" Height="30"></Image>
+
+                            <Label Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='去中心化交易所'}" ></Label>
+                        </Grid>
+                    </TabItem.Header>                    
+                    <!--todo-->
+
+                    <TabControl x:Name="TabControl0Dex" Margin="0,5" SelectionChanged="TabControl0Dex_SelectionChanged">
+                        <TabControl.Resources>
+                            <Style TargetType="{x:Type TabPanel}">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </TabControl.Resources>
+
+                        <TabItem >
+                            <TabItem.Header>
+                                <Grid MinWidth="120" Height="25">
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='交易对列表'}" Margin="0"></Label>
+                                </Grid>
+                            </TabItem.Header>
+
+                            <Grid Margin="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <!--<RowDefinition  Height="30"></RowDefinition>-->
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="400"></ColumnDefinition>
+                                        <ColumnDefinition Width="120"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='请输入过滤条件:'}" ></Label>
+                                    <TextBox Grid.Column="1"  Name="TextBoxFilter00"  Margin="5,0"></TextBox>
+                                    <Button Grid.Column="2" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='查询'}" Click="Click_SearchDivPairList"  ></Button>
+                                </Grid>
+
+                                <DataGrid Grid.Row="1" x:Name="DataGridPairList" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single"  MinWidth="1200" MaxWidth="1800">
+                                    <DataGrid.Columns>
+
+                                        <DataGridTemplateColumn Header="Share Token"  CanUserSort="True"  SortMemberPath="_shareToken" MinWidth="160">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Click="TagOnGotoAddress" Tag="{Binding _shareToken}" HorizontalAlignment="Left" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" MinWidth="150" >
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                                                <ColumnDefinition></ColumnDefinition>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image  Grid.Column="0" Source="{Binding ShareTokenIconLocalFileName}" Height="30" Width="30"></Image>
+                                                            <Label Grid.Column="1" Content="{Binding ShareTokenSymbol}"></Label>
+                                                            <Label Grid.Column="2" Content="{Binding ShareTokenName}"></Label>
+                                                        </Grid>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn  Header="Share Token Liquidity Amount"  CanUserSort="True"  SortMemberPath="ShareTokenCurrentLiqAmount" MinWidth="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Label Content="{Binding ShareTokenCurrentLiqAmount}"  HorizontalAlignment="Right"></Label>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="Div Token" CanUserSort="True"  SortMemberPath="DivTokenAddress" MinWidth="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Click="TagOnGotoAddress" Tag="{Binding DivTokenAddress}" HorizontalAlignment="Left" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Margin="3,0">
+                                                        <Grid >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="32"></ColumnDefinition>
+                                                                <ColumnDefinition ></ColumnDefinition>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image  Grid.Column="0" Source="{Binding DivTokenImagePath}" Height="30" Width="30"></Image>
+                                                            <Label Grid.Column="1" Content="{Binding DivTokenSymbol}"></Label>
+                                                        </Grid>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn  Header="DivToken Liquidity Amount"  CanUserSort="True"  SortMemberPath="DivTokenCurrentLiqAmount" MinWidth="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Label Content="{Binding DivTokenCurrentLiqAmount}" HorizontalAlignment="Right"></Label>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn  Header="Price0 (1 ShareToken = ? DivToken)"  CanUserSort="True"  SortMemberPath="Price0" MinWidth="50">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Label Content="{Binding Price0}" ContentStringFormat="{}{0:N18}" HorizontalAlignment="Right"></Label>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn  Header="Price1 (1 DivToken = ? ShareToken)"  CanUserSort="True"  SortMemberPath="Price1" MinWidth="50">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Label Content="{Binding Price1}" ContentStringFormat="{}{0:N18}" HorizontalAlignment="Right"></Label>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <!--<DataGridTemplateColumn>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='刷新价格'}" Tag="{Binding _pair}" Click="Click_RefreshPrice" Margin="5,0" ></Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>-->
+
+                                        <DataGridTemplateColumn MinWidth="160" MaxWidth="160">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='详情（交易/流动性/分红）'}" Tag="{Binding _newPair}" Click="Click_PairAddress" Margin="5,3" Width="150" ></Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </Grid>
+
+                        </TabItem>
+
+                        <TabItem>
+                            <TabItem.Header>
+                                <Grid MinWidth="120" Height="25">
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='交易、流动性和分红'}" Margin="0"></Label>
+                                </Grid>
+                            </TabItem.Header>
+
+                            <ScrollViewer Grid.Row="1">
+                                <StackPanel Width="1200"  VerticalAlignment="Top">
+
+                                    <Grid Height="250" Margin="10" Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" ></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition Width="200" ></ColumnDefinition>
+                                            <ColumnDefinition ></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+
+                                        <Border  Grid.Row="1" Grid.Column="0"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="3" Grid.Column="0" Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="1" Grid.Column="2"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="3" Grid.Column="2" Background="WhiteSmoke"></Border>
+                                       
+                                        <Border  Grid.Row="0" Grid.Column="1"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="2" Grid.Column="1" Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="4" Grid.Column="1"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="0" Grid.Column="3"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="2" Grid.Column="3" Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="4" Grid.Column="3"  Background="WhiteSmoke"></Border>
+
+
+                                        <Label Grid.Row="0" Grid.Column="0" Content="Pair:" HorizontalAlignment="Right"></Label>
+                                        <Button Grid.Row="0" Grid.Column="1" Name="ButtonPair01"  Click="Click_GoToAddress" HorizontalAlignment="Left" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="Blue"></Button>
+                                        <Label Grid.Row="0" Grid.Column="2" Content="IsPaused:" HorizontalAlignment="Right"></Label>
+                                        <Label Grid.Row="0" Grid.Column="3" Name="LabelIsPaused" HorizontalAlignment="Left"></Label>
+
+                                        <Button Grid.Row="0" Grid.Column="3" Width="75" HorizontalAlignment="Right" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='刷新'}" Click="Click_RefreshPair" ></Button>
+
+                                        <Label Grid.Row="1" Grid.Column="0" Content="Share Token:" HorizontalAlignment="Right" ></Label>
+                                        <StackPanel Grid.Row="1" Grid.Column="1" Name="StackPanelShareToken01" Orientation="Horizontal" HorizontalAlignment="Left" >
+                                            <Button Name="ButtonShareToken01" MaxWidth="200" Tag="{Binding Address}"   ToolTip="{Binding Address}"  Click="Click_GoToAddress2" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  HorizontalAlignment="Left">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="32"></ColumnDefinition>
+                                                        <ColumnDefinition ></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{Binding ImagePath}" Width="30" Height="30"></Image>
+                                                    <Label Grid.Column="1" Content="{Binding Symbol}" VerticalAlignment="Center" Foreground="Blue"></Label>
+                                                </Grid>
+                                            </Button>
+                                            <Label  Grid.Row="0" x:Name="LabelShareTokenLiq"  ContentStringFormat="N18"></Label>
+                                        </StackPanel>
+
+                                        <Label Grid.Row="1" Grid.Column="2" Content="Div Token:" HorizontalAlignment="Right"></Label>
+                                        <StackPanel Grid.Row="1" Grid.Column="3" Name="StackPanelDivToken01" Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <Button  Name="ButtonDivToken01"  MaxWidth="200"   Tag="{Binding Address}"  ToolTip="{Binding Address}" Click="Click_GoToAddress2" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  HorizontalAlignment="Left">
+                                                <Grid >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="32"></ColumnDefinition>
+                                                        <ColumnDefinition ></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{Binding ImagePath}" Height="30" Width="30" ></Image>
+                                                    <Label Grid.Column="1"  Content="{Binding Symbol}" VerticalAlignment="Center" Foreground="Blue"></Label>
+                                                </Grid>
+                                            </Button>
+                                            <Label  Grid.Row="0" x:Name="LabelDivTokenLiq"  ContentStringFormat="N18"></Label>
+                                        </StackPanel>
+
+                                        <Label  Grid.Row="2" Grid.Column="0" Content="Price0:" HorizontalAlignment="Right"></Label>
+                                        <Label  Grid.Row="2" Grid.Column="1" Name="LabelPrice0" Content="***"></Label>
+
+                                        <Label  Grid.Row="2" Grid.Column="2" Content="Price1:" HorizontalAlignment="Right"></Label>
+                                        <Label  Grid.Row="2" Grid.Column="3" Name="LabelPrice1" Content="***"></Label>
+
+                                        <Label Grid.Row="3" Grid.Column="0" Content="Select Account:" HorizontalAlignment="Right" Foreground="Green" ></Label>
+                                        <ComboBox  x:Name="ComboBoxAddress01"   Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3"  Width="500" HorizontalAlignment="Left" SelectionChanged="ComboBoxAddress01_SelectionChanged"  >
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Width="{Binding  ElementName=ComboBoxAddress01, Path=Width}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="160"></ColumnDefinition>
+                                                            <ColumnDefinition ></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Grid.Column="0" Content="{Binding AddressAlias}"></Label>
+                                                        <Label Grid.Column="1" Content="{Binding Address}" VerticalAlignment="Center"></Label>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+
+                                        <Label Grid.Row="4" Grid.Column="0" Content="Account Balance:" HorizontalAlignment="Right" Foreground="Green" ></Label>
+
+                                        <Grid Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100" ></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition Width="100" ></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition Width="100" ></ColumnDefinition>
+                                                <ColumnDefinition ></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" Content="ETH:" HorizontalAlignment="Right" Foreground="Green" ></Label>
+                                            <Label Grid.Column="1" x:Name="LabelAccountEth" Content=""></Label>
+                                            <Label Grid.Column="2" x:Name="LabelAccountShareToken"  Content="Share Token:" HorizontalAlignment="Right" Foreground="Green" ></Label>
+                                            <Label Grid.Column="3" x:Name="LabelAccountShare" Content=""></Label>
+                                            <Label Grid.Column="4" Name="LabelAccountDivToken" Content="Div Token:" HorizontalAlignment="Right" Foreground="Green" ></Label>
+                                            <Label Grid.Column="5" x:Name="LabelAccountDiv" Content=""></Label>
+
+                                        </Grid>
+
+                                    </Grid>
+
+                                    <Expander   Name="ExpanderSwap1" Expanded="Expanded_Swap1" Margin="10" MinHeight="40" >
+                                        <Expander.Header>
+                                            <TextBlock Text="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='交易'}" Background="WhiteSmoke" Width="1200"></TextBlock>
+                                        </Expander.Header>
+
+                                            <Grid Height="250" Width="800" >
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                            </Grid.RowDefinitions>
+
+                                            <Label Grid.Row="0" Grid.Column="0" Content="From:"></Label>
+                                            <Grid  Grid.Row="0" Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+
+                                                <ComboBox  Name="ComboBoxFromToken"    Grid.Row="1" Grid.Column="0"  SelectionChanged="ComboBoxFromTokenOnSelectionChanged">
+                                                    <ComboBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid Width="{Binding  ElementName=ComboBoxFromToken, Path=Width}">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="32"></ColumnDefinition>
+                                                                    <ColumnDefinition ></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Image  Grid.Column="0" Source="{Binding ImagePath}" Height="30" Width="30"></Image>
+                                                                <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ComboBox.ItemTemplate>
+                                                </ComboBox>
+
+                                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="TextBoxFromToken"  HorizontalContentAlignment="Right"  Foreground="Blue"  LostFocus="TextBoxFromTokenOnLostFocus"></TextBox>
+                                            </Grid>
+
+                                            <Label Grid.Row="1" Grid.Column="0" Content="To:"></Label>
+                                            <Grid  Grid.Row="1" Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Button  Name="ButtonToToken"    Grid.Row="1" Grid.Column="0" Tag="{Binding Address}"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left">
+                                                    <Grid HorizontalAlignment="Left">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="32"></ColumnDefinition>
+                                                            <ColumnDefinition ></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image  Grid.Column="0" Source="{Binding ImagePath}" Height="30" Width="30"></Image>
+                                                        <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                    </Grid>
+                                                </Button>
+
+                                                <Label Grid.Row="1" Grid.Column="1" x:Name="LabelToToken" HorizontalAlignment="Right" Foreground="Blue"></Label>
+
+                                            </Grid>
+
+                                            <Grid  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="80"></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                    <ColumnDefinition Width="80"></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Content="Price:"></Label>
+                                                <Label  Grid.Column="1"  x:Name="LabelPrice"></Label>
+
+                                              
+                                            </Grid>
+
+                                            <Grid  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='滑点容差（%）:'}"></Label>
+                                                <TextBox Grid.Column="1"  x:Name="TextBoxSlippage" Text="0.5" Width="100"  HorizontalAlignment="Left" HorizontalContentAlignment="Right"></TextBox>
+
+                                                <Label Grid.Column="2" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='交易截至期限(分钟):'}"></Label>
+                                                <TextBox  Grid.Column="3"  x:Name="TextBoxTxDeadline"  Text="20"  Width="100"  HorizontalAlignment="Left" HorizontalContentAlignment="Right"></TextBox>
+                                            </Grid>
+
+                                            <Button Grid.Row="4" Grid.Column="1"  Content="兑换（Swap）"  Click="ButtonSwapOnClick" Height="40" Width="200" HorizontalAlignment="Left"></Button>
+
+                                        </Grid>
+
+                                    </Expander>
+
+                                    <Expander Name="ExpanderLiq2" Margin="10" MinHeight="40"   Expanded="Expanded_Liq2" >
+                                        <Expander.Header>
+                                            <TextBlock Text="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='流动性'}" Background="WhiteSmoke" Width="1200"></TextBlock>
+                                        </Expander.Header>
+
+                                        <TabControl Name="TabControlLiq" SelectionChanged="TabControlLiq_SelectionChanged" Width="800" Margin="0,5">
+
+                                            <TabItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='增加流动性'}" Width="120">
+
+                                                <Grid Height="250" Margin="5" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="100"></ColumnDefinition>
+                                                        <ColumnDefinition></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition Height="50"></RowDefinition>
+                                                    </Grid.RowDefinitions>
+
+                                                    <Label Grid.Row="0" Grid.Column="0" Content="ShareToken:"></Label>
+                                                    <Grid  Grid.Row="0" Grid.Column="1">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition  Width="200"></ColumnDefinition>
+                                                            <ColumnDefinition  Width="200"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Button  Name="ButtonTokenA"    Grid.Row="1" Grid.Column="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  HorizontalAlignment="Left">
+                                                            <Grid HorizontalAlignment="Left">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="32"></ColumnDefinition>
+                                                                    <ColumnDefinition ></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Image  Grid.Column="0" Source="{Binding ImagePath}" Height="30" Width="30"></Image>
+                                                                <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                            </Grid>
+
+                                                        </Button>
+
+                                                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="TextBoxTokenA"  HorizontalContentAlignment="Right"  Foreground="Blue"  LostFocus="TextBoxTokenAOnLostFocus"></TextBox>
+                                                        <Label Grid.Row="1" Grid.Column="2" x:Name="LabelTokenAMax"  HorizontalContentAlignment="Right" Foreground="Gray"></Label>
+                                                    </Grid>
+
+                                                    <Label Grid.Row="1" Grid.Column="0" Content="DivToken:"></Label>
+                                                    <Grid  Grid.Row="1" Grid.Column="1">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="100"></ColumnDefinition>
+                                                            <ColumnDefinition Width="100"></ColumnDefinition>
+                                                            <ColumnDefinition Width="200"></ColumnDefinition>
+                                                            <ColumnDefinition Width="100"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Button  Name="ButtonTokenB" Grid.Column="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left">
+                                                            <Grid HorizontalAlignment="Left">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="32"></ColumnDefinition>
+                                                                    <ColumnDefinition ></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Image  Grid.Column="0" Source="{Binding ImagePath}" Height="30" Width="30"></Image>
+                                                                <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                            </Grid>
+                                                        </Button>
+
+                                                        <Label Grid.Column="1" Content="Max:" HorizontalContentAlignment="Right" Foreground="Gray"></Label>
+                                                        <TextBox Grid.Column="2" x:Name="TextBoxTokenB"  HorizontalContentAlignment="Right"  Foreground="Blue" TextChanged="TextBoxTokenB_TextChanged"></TextBox>
+                                                        <Label Grid.Column="3" Content="Min:" HorizontalContentAlignment="Right" Foreground="Gray"></Label>
+                                                        <Label  Grid.Column="4" x:Name="LabelTokenBMax"  HorizontalContentAlignment="Left" Foreground="Blue"></Label>
+                                                    </Grid>
+
+                                                    <Grid  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="120"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition Width="120"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='滑点容差（%）:'}"></Label>
+                                                        <TextBox Grid.Column="1"  x:Name="TextBoxSlippageLiq" Text="1" Width="100"  HorizontalAlignment="Left" HorizontalContentAlignment="Right" LostFocus="TextBoxSlippageLiq_LostFocus"></TextBox>
+
+                                                        <Label Grid.Column="2" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='交易截至期限(分钟):'}"></Label>
+                                                        <TextBox  Grid.Column="3"  x:Name="TextBoxTxDeadlineLiq"  Text="20"  Width="100"  HorizontalAlignment="Left" HorizontalContentAlignment="Right"></TextBox>
+                                                    </Grid>
+
+                                                    <Button Grid.Row="3" Grid.Column="1"  Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='增加流动性（Add Liquidity）'}"  Click="ButtonAddLiquidityOnClick" Height="40" Width="200" HorizontalAlignment="Left"></Button>
+
+                                                </Grid>
+
+                                            </TabItem>
+
+                                            <TabItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='减少流动性'}" Width="120">
+
+                                                <Grid Height="250" Margin="5" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="100"></ColumnDefinition>
+                                                        <ColumnDefinition></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition Height="50"></RowDefinition>
+                                                    </Grid.RowDefinitions>
+
+                                                    <Label Grid.Row="0" Grid.Column="0" Content="ShareToken:"></Label>
+                                                    <Grid  Grid.Row="0" Grid.Column="1">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition Width="30"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Button  Name="ButtonTokenAr" Grid.Column="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left" >
+                                                            <Grid HorizontalAlignment="Left">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="32"></ColumnDefinition>
+                                                                    <ColumnDefinition ></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Image  Grid.Column="0" Source="{Binding ImagePath}" Height="30" Width="30"></Image>
+                                                                <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                            </Grid>
+                                                        </Button>
+
+                                                        <TextBox Grid.Column="1" Grid.ColumnSpan="3" x:Name="TextBoxTokenAr"  HorizontalContentAlignment="Right"  Foreground="Blue"  IsReadOnly="True"  Margin="5,0"></TextBox>
+                                                    </Grid>
+
+                                                    <Label Grid.Row="1" Grid.Column="0" Content="DivToken:"></Label>
+                                                    <Grid  Grid.Row="1" Grid.Column="1">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition Width="30"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <Button  Name="ButtonTokenBr"    Grid.Row="1" Grid.Column="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left"  >
+                                                            <Grid HorizontalAlignment="Left">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="32"></ColumnDefinition>
+                                                                    <ColumnDefinition ></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Image  Grid.Column="0" Source="{Binding ImagePath}" Height="30" Width="30"></Image>
+                                                                <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                            </Grid>
+                                                        </Button>
+
+                                                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="TextBoxTokenBr"  HorizontalContentAlignment="Right"  Foreground="Blue"   IsReadOnly="True"  Margin="5,0"></TextBox>
+                                                        <Label Grid.Row="1" Grid.Column="2" Content="+" Foreground="Blue" HorizontalAlignment="Center" ></Label>
+                                                        <TextBox Grid.Row="1" Grid.Column="3" x:Name="TextBoxAssTokenAdd"  HorizontalContentAlignment="Right"  Foreground="Red"  IsReadOnly="True" Margin="5,0"></TextBox>
+                                                    </Grid>
+
+                                                    <Grid  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="80"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition Width="200"></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='要取出的流动性值(%):'}" TextWrapping="Wrap"  VerticalAlignment="Center"></TextBlock>
+                                                        <Slider  Grid.Column="1" Grid.ColumnSpan="2"  x:Name="SliderLiqR" VerticalAlignment="Center" Foreground="Blue"  Margin="5,0"  ValueChanged="SliderLiqR_ValueChanged" Maximum="100"  SmallChange="1"></Slider>
+                                                        <Label Grid.Column="2"  x:Name="LabelLiqR" Content="" HorizontalAlignment="Right" Foreground="Gray"></Label>
+
+                                                    </Grid>
+
+                                                    <Grid  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="120"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition Width="120"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='滑点容差（%）:'}"></Label>
+                                                        <TextBox Grid.Column="1"  x:Name="TextBoxSlippageLiqR" Text="1" Width="100"  HorizontalAlignment="Left" HorizontalContentAlignment="Right"></TextBox>
+
+                                                        <Label Grid.Column="2" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='交易截至期限(分钟):'}"></Label>
+                                                        <TextBox  Grid.Column="3"  x:Name="TextBoxTxDeadlineLiqR"  Text="20"  Width="100"  HorizontalAlignment="Left" HorizontalContentAlignment="Right"></TextBox>
+                                                    </Grid>
+
+                                                    <Button Grid.Row="4" Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='减少流动性（Remove Liquidity）'}"  Click="ButtonRemoveLiquidityOnClick" Height="40"  Width="200" HorizontalAlignment="Left"></Button>
+
+                                                </Grid>
+
+                                            </TabItem>
+
+                                        </TabControl>
+
+                                    </Expander>
+
+                                    <Expander  Name="ExpanderDiv3" Margin="10" MinHeight="40"  Expanded="Expanded_Div3">
+                                        <Expander.Header>
+                                            <TextBlock Text= "{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='分红和取款'}" Background="WhiteSmoke" Width="1200"></TextBlock>
+                                        </Expander.Header>
+
+                                        <Grid Height="100"  Width="800" Margin="5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Column="0" Grid.Row="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='可领取数量:'}"></Label>
+                                            <TextBox Grid.Column="1" Grid.Row="0"  Name="TextBoxDivAssAmount"  Foreground="Red" IsReadOnly="True" ></TextBox>
+                                            <Button Grid.Column="2" Grid.Row="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='刷新'}" Width="75" HorizontalAlignment="Left" Click="Click_RefreshDivAmount"></Button>
+                                            <Button Grid.Column="1" Grid.Row="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='领取'}" Width="200" HorizontalAlignment="Left" Click="Click_Div"></Button>
+                                        </Grid>
+
+                                    </Expander>
+
+                                </StackPanel>
+                                
+                            </ScrollViewer>
+
+                        </TabItem>
+
+                        <TabItem >
+                            <TabItem.Header>
+                                <Grid MinWidth="120" Height="25">
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='创建交易对'}" Margin="0"></Label>
+                                </Grid>
+                            </TabItem.Header>
+
+                            <Grid Width="1200" Height="300" VerticalAlignment="Top" Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="280"></ColumnDefinition>
+                                    <ColumnDefinition ></ColumnDefinition>
+                                    <ColumnDefinition Width="280"></ColumnDefinition>
+                                    <ColumnDefinition ></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <Border  Grid.Row="1" Grid.Column="0"  Background="WhiteSmoke"></Border>
+                                <Border  Grid.Row="3" Grid.Column="0" Background="WhiteSmoke"></Border>
+                                <Border  Grid.Row="5" Grid.Column="0"  Background="WhiteSmoke"></Border>
+                                <Border  Grid.Row="1" Grid.Column="2"  Background="WhiteSmoke"></Border>
+                                <Border  Grid.Row="3" Grid.Column="2" Background="WhiteSmoke"></Border>
+                                <Border  Grid.Row="5" Grid.Column="2"  Background="WhiteSmoke"></Border>
+                                
+                                <Border  Grid.Row="0" Grid.Column="1"  Background="WhiteSmoke"></Border>
+                                <Border  Grid.Row="2" Grid.Column="1" Background="WhiteSmoke"></Border>
+                                <Border  Grid.Row="4" Grid.Column="1"  Background="WhiteSmoke"></Border>
+                                <Border  Grid.Row="0" Grid.Column="3"  Background="WhiteSmoke"></Border>
+                                <Border  Grid.Row="2" Grid.Column="3" Background="WhiteSmoke"></Border>
+                                <Border  Grid.Row="4" Grid.Column="3"  Background="WhiteSmoke"></Border>
+
+                                <Label Grid.Row="0" Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='请输入ShareToken地址:'}" HorizontalAlignment="Right"></Label>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="TextBoxShareToken02" MaxLength="43" LostFocus="LostFocus_DivToken02" ></TextBox>
+                                <Button Grid.Row="0" Grid.Column="2"  Click="Click_GetShareTokenInfo" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='查询'}" Width="60" HorizontalAlignment="Left" ></Button>
+                                <Label Grid.Row="0" Grid.Column="2"   Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='当前ShareToken地址：'}" HorizontalAlignment="Right" ></Label>
+                                <Button Grid.Row="0" Grid.Column="3"  x:Name="LabelShareTokenAddress02" Foreground="Blue" Click="Click_GoToAddress"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left"></Button>
+
+                                <Label Grid.Row="1" Grid.Column="0" Content="name:" HorizontalAlignment="Right"></Label>
+                                <Label Grid.Row="1" Grid.Column="1" x:Name="LabelName02" ></Label>
+                                <Label Grid.Row="1" Grid.Column="2" Content="symbol:" HorizontalAlignment="Right"></Label>
+                                <Label Grid.Row="1" Grid.Column="3" x:Name="LabelSymbol02" ></Label>
+
+                                <Label Grid.Row="2" Grid.Column="0" Content="totalSupply:" HorizontalAlignment="Right"></Label>
+                                <Label Grid.Row="2" Grid.Column="1" x:Name="LabelTotalSupply02" ></Label>
+                                <Label Grid.Row="2" Grid.Column="2" Content="decimals:" HorizontalAlignment="Right"></Label>
+                                <Label Grid.Row="2" Grid.Column="3" x:Name="LabelDecimals02" ></Label>
+
+                                <!--<Label Grid.Column="1" x:Name="LabelAssetTokenName"></Label>
+                                <Label Grid.Column="2" x:Name="LabelAssetTokenSymbol"></Label>-->
+                                <Label Grid.Row="3" Grid.Column="0" Content="Div Token:" HorizontalAlignment="Right" ></Label>
+                                <Button Grid.Row="3" Grid.Column="1" x:Name="ButtonDivSymbol02"  Click="Click_GoToAddress2"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left" Foreground="Blue"></Button>
+                                <Label Grid.Row="3" Grid.Column="2" Content="Div Token Decimals:" HorizontalAlignment="Right"></Label>
+                                <Label Grid.Row="3" Grid.Column="3" x:Name="LabelDivDecimals02" ></Label>
+
+                                <Label Grid.Row="4" Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='请输入 Magnitude 的小数位:'}" HorizontalAlignment="Right"></Label>
+                                <TextBox Grid.Row="4" Grid.Column="1" x:Name="TextBoxPowerM02" MaxLength="2"></TextBox>
+                                <Label Grid.Row="4" Grid.Column="2" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='推荐的 Magnitude 的小数位:'}" HorizontalAlignment="Right"></Label>
+                                <Label Grid.Row="4" Grid.Column="3" x:Name="LabelRecommendedPowerM02"></Label>
+
+                                <Button  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='创建交易对'}" Click="Click_NewPair" ></Button>
+                            </Grid>
+                        </TabItem>
+                        
+                    </TabControl>
+
+
+                </TabItem>
+
+                <TabItem Width="160">
+
+                    <TabItem.Header >
+                        <Grid HorizontalAlignment="Left" Width="150">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Source="Image\Dividends.png"  Width="30" Height="30"></Image>
+
+                            <Label Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='Share Token'}" ></Label>
+                        </Grid>
+                    </TabItem.Header>
+
+                    <!--ShareToken-->
+                    <TabControl Name="TabControlShareToken"   Margin="0,5">
+                        <TabControl.Resources>
+                            <Style TargetType="{x:Type TabPanel}">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </TabControl.Resources>
+
+                        <TabItem >
+                            <TabItem.Header>
+                                <Grid MinWidth="120" Height="25">
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='Share Token List'}" Margin="0"></Label>
+                                </Grid>
+                            </TabItem.Header>
+
+                            <Grid Margin="10" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <!--<RowDefinition  Height="30"></RowDefinition>-->
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition Width="400" ></ColumnDefinition>
+                                        <ColumnDefinition ></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='请输入过滤条件:'}"  HorizontalAlignment="Right"></Label>
+                                    <TextBox Grid.Column="1"  Name="TextBoxFilter10" Margin="5,0"></TextBox>
+                                    <Button Grid.Column="2" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='查询'}" Click="Click_SearchShareTokenList"  Width="100" HorizontalAlignment="Left" ></Button>
+                                </Grid>
+
+                                <DataGrid Grid.Row="1" x:Name="DataGridShareList" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" MinWidth="1200" MaxWidth="1800">
+                                    <DataGrid.Columns>
+
+                                        <DataGridTemplateColumn Header="Share Token (Name / TotalSupply)" MinWidth="510" CanUserSort="True"  SortMemberPath="ShareTokenName">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Width="500">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                                                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                                                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image  Grid.Column="0" Source="{Binding ShareTokenIconLocalFileName}" Height="30" Width="30"></Image>
+                                                        <Label Grid.Column="1" Content="{Binding ShareTokenSymbol}"></Label>
+                                                        <Label Grid.Column="2" Content="{Binding ShareTokenName}"></Label>
+                                                        <Label Grid.Column="3" Content="{Binding ShareTokenCurrentTotalSupply}" HorizontalAlignment="Right"></Label>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="Dividend Token (Name / Distributed Amount)" MinWidth="510" CanUserSort="True"  SortMemberPath="AccumulatedDistributedDivAmount">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Width="500">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                                                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image  Grid.Column="0" Source="{Binding DivTokenImagePath}" Height="30" Width="30"></Image>
+                                                        <Label Grid.Column="1" Content="{Binding DivTokenSymbol}"></Label>
+                                                        <Label Grid.Column="2" Content="{Binding DivTokenCurrentAmount}" ContentStringFormat="{}{0:N18}" HorizontalAlignment="Right"></Label>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn  MinWidth="100" MaxWidth="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='详情'}" Tag="{Binding _shareTokenAddrss}" Click="Click_ShareTokenDetail" Margin="5,3" ></Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <!--<DataGridTemplateColumn  >
+                                            <DataGridTemplateColumn.Header>
+                                                <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='创建者'}"></Label>
+                                            </DataGridTemplateColumn.Header>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="{Binding _sender}" Tag="{Binding _sender}" Click="Click_GoToAddress" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" HorizontalAlignment="Left" ></Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>-->
+
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <!--<Label Grid.Row="2" Content="提示：最多显示300条记录。" ></Label>-->
+
+                            </Grid>
+                        </TabItem>
+
+                        <TabItem >
+                            <TabItem.Header>
+                                <Grid MinWidth="120" Height="25">
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='Share Token Detail'}" Margin="0"></Label>
+                                </Grid>
+                            </TabItem.Header>
+                           
+                            <ScrollViewer Grid.Row="1">
+
+                                <StackPanel  Width="1200"  VerticalAlignment="Top">
+
+                                    <Grid Grid.Row="0" Height="350" Margin="10" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition  Width="2*" ></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition  Width="2*" ></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+
+                                        <Border  Grid.Row="1" Grid.Column="0"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="3" Grid.Column="0" Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="5" Grid.Column="0" Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="1" Grid.Column="2"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="3" Grid.Column="2" Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="5" Grid.Column="2" Background="WhiteSmoke"></Border>
+
+                                        <Border  Grid.Row="0" Grid.Column="1"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="2" Grid.Column="1" Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="4" Grid.Column="1"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="6" Grid.Column="1"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="0" Grid.Column="3"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="2" Grid.Column="3" Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="4" Grid.Column="3"  Background="WhiteSmoke"></Border>
+                                        <Border  Grid.Row="6" Grid.Column="3"  Background="WhiteSmoke"></Border>
+
+
+                                        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition ></ColumnDefinition>
+                                                <ColumnDefinition ></ColumnDefinition>
+                                                <ColumnDefinition ></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <!--<Label Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='请输入ShareToken地址:'}" HorizontalAlignment="Right"></Label>-->
+                                            <Label Grid.Column="0" Content="ShareToken Address:" HorizontalAlignment="Right"></Label>
+                                            <TextBox Grid.Column="1" Text="" Name="TextBoxShareTokenAddress11"></TextBox>
+                                            <Button Grid.Column="2" Width="100" HorizontalAlignment="Left" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='查询'}" Click="Click_QueryShareTokenDetail"></Button>
+                                        </Grid>
+
+                                        <Label Grid.Row="1" Grid.Column="0" Content="Share Token:" HorizontalAlignment="Right"></Label>
+                                        <Button Grid.Row="1" Grid.Column="1" x:Name="ButtonShareTokenAddress11"  Click="Click_GoToAddress" HorizontalAlignment="Left" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="Blue" ></Button>
+
+                                        <Label Grid.Row="2" Grid.Column="0" Content="name:" HorizontalAlignment="Right"></Label>
+                                        <Label Grid.Row="2" Grid.Column="1" x:Name="LabelName11" ></Label>
+
+                                        <Label Grid.Row="2" Grid.Column="2" Content="symbol:" HorizontalAlignment="Right"></Label>
+                                        <Label Grid.Row="2" Grid.Column="3" x:Name="LabelSymbol11" ></Label>
+
+                                        <Label Grid.Row="3" Grid.Column="0" Content="Icon Image:" HorizontalAlignment="Right"></Label>
+                                        <Image Grid.Row="3" Grid.Column="1" x:Name="ImageIcon11"  Width="30" Height="30" HorizontalAlignment="Left"></Image>
+
+                                        <Label Grid.Row="3" Grid.Column="2" Content="decimals:" HorizontalAlignment="Right"></Label>
+                                        <Label Grid.Row="3" Grid.Column="3" x:Name="LabelDecimals11" ></Label>
+
+                                        <Label Grid.Row="4" Grid.Column="0" Content="TotalSupply:" HorizontalAlignment="Right"></Label>
+                                        <Label Grid.Row="4" Grid.Column="1" x:Name="LabelTotalSupply11" ></Label>
+
+                                        <Label Grid.Row="4" Grid.Column="2" Content="Div Token:" HorizontalAlignment="Right"></Label>
+                                        <Button x:Name="ButtonDivSymbol11" Grid.Row="4" Grid.Column="3" Click="Click_GoToAddress2"  HorizontalAlignment="Left"  Width="auto"  Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  Foreground="Blue"  >
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto" ></ColumnDefinition>
+                                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Grid.Column="0" Source="{Binding ImagePath}"  Width="30" Height="30"></Image>
+                                                <Label Grid.Column="1" Content="{Binding Symbol}" Foreground="Blue" ></Label>
+                                            </Grid>
+                                        </Button>
+
+                                        <Label Grid.Row="5" Grid.Column="0" Content="累计分红数量:" HorizontalAlignment="Right"></Label>
+                                        <Label Grid.Row="5" Grid.Column="1" x:Name="LabelAccumulatedDistributedDivAmount" ></Label>
+
+                                        <Label Grid.Row="5" Grid.Column="2" Content="当前未分红数量:" HorizontalAlignment="Right"></Label>
+                                        <Label Grid.Row="5" Grid.Column="3" x:Name="LabelWaitingDivAmount" ></Label>
+
+
+                                        <Label Grid.Row="6" Grid.Column="0" Content="Admin:" HorizontalAlignment="Right"></Label>
+                                        <Button Grid.Row="6" Grid.Column="1" x:Name="ButtonAdmin11" HorizontalAlignment="Left" Click="Click_GoToAddress" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  Foreground="Blue"></Button>
+
+                                        <Label Grid.Row="6" Grid.Column="2" Content="Supper Admin:" HorizontalAlignment="Right"></Label>
+                                        <Button Grid.Row="6" Grid.Column="3" x:Name="ButtonSupperAdmin11"  HorizontalAlignment="Left" Click="Click_GoToAddress" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  Foreground="Blue"></Button>
+
+                                    </Grid>
+
+                                    <Expander  MinHeight="40" Margin="10">
+                                        <Expander.Header>                                            
+                                            <TextBlock Text="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='分红历史'}" Background="WhiteSmoke" Width="1200"></TextBlock>
+                                        </Expander.Header>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition MinHeight="50"></RowDefinition>
+                                                <RowDefinition MinHeight="50"></RowDefinition>
+                                            </Grid.RowDefinitions>
+
+                                            <Label Grid.Row="0" Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='提示：最多显示300条记录。'}"></Label>
+                                            <Button Grid.Row="0" Grid.Column="1" Content="刷新" Width="120" HorizontalAlignment="Right" Click="Click_ShareHisList"></Button>
+
+                                            <DataGrid Grid.Row="1" Grid.ColumnSpan="2" x:Name="DataGridDivHisList" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single">
+                                                <DataGrid.Columns>
+                                                    <DataGridTemplateColumn Header="Dividend Index" SortMemberPath="_dividendIndex" >
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Button Content="{Binding Path=_dividendIndex}" Tag="{Binding Path=TransactionHash}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="TagOnGotoTxId" Foreground="Blue"></Button>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+
+                                                    <DataGridTextColumn Binding="{Binding BlockNumber}"   ElementStyle="{StaticResource TextStyle2}" IsReadOnly="True" >
+                                                        <DataGridTextColumn.Header>
+                                                            <TextBlock Text ="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='BlockNumber'}" />
+                                                        </DataGridTextColumn.Header>
+                                                    </DataGridTextColumn>
+
+                                                    <DataGridTextColumn  Binding="{Binding _waitingDivAmount}"   ElementStyle="{StaticResource NumberStyle}" IsReadOnly="True" >
+                                                        <DataGridTextColumn.Header>
+                                                            <TextBlock Text ="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='分红前数量'}" />
+                                                        </DataGridTextColumn.Header>
+                                                    </DataGridTextColumn>
+
+                                                    <DataGridTextColumn  Binding="{Binding _realDivAmount}"   ElementStyle="{StaticResource NumberStyle}" IsReadOnly="True" >
+                                                        <DataGridTextColumn.Header>
+                                                            <TextBlock Text ="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='分红数量'}" />
+                                                        </DataGridTextColumn.Header>
+                                                    </DataGridTextColumn>
+
+                                                    <DataGridTextColumn  Binding="{Binding _currentSupply}"   ElementStyle="{StaticResource NumberStyle}" IsReadOnly="True" >
+                                                        <DataGridTextColumn.Header>
+                                                            <TextBlock Text ="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='当前份额(ShareToken Balance)'}" />
+                                                        </DataGridTextColumn.Header>
+                                                    </DataGridTextColumn>
+
+                                                    <DataGridTextColumn  Binding="{Binding _divHeight}"   ElementStyle="{StaticResource NumberStyle}" IsReadOnly="True" >
+                                                        <DataGridTextColumn.Header>
+                                                            <TextBlock Text ="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='每份分红(分红高度)'}" />
+                                                        </DataGridTextColumn.Header>
+                                                    </DataGridTextColumn>
+
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </Grid>
+                                    </Expander>
+
+                                    <Expander MinHeight="40" Margin="10">
+                                        <Expander.Header>
+                                            <TextBlock Text="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='领取分红'}" Background="WhiteSmoke" Width="1200"></TextBlock>
+                                        </Expander.Header>
+
+                                        <Grid Height="150">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition Width="510"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Row="0" Grid.Column="0" Content="Account:" HorizontalAlignment="Right"></Label>
+                                            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ComboBoxShareTokenAccount" SelectionChanged="ComboBoxShareTokenAccount_SelectionChanged">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Width="{Binding  ElementName=ComboBoxShareTokenAccount, Path=Width}">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="160"></ColumnDefinition>
+                                                                <ColumnDefinition ></ColumnDefinition>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Label Grid.Column="0" Content="{Binding AddressAlias}"></Label>
+                                                            <Label Grid.Column="1" Content="{Binding Address}" VerticalAlignment="Center"></Label>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                            <Label Grid.Row="1" Grid.Column="0" Content="DivToken Amount:" HorizontalAlignment="Right"></Label>
+                                            <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Name="TextBoxAccountDivTokenAmount"></TextBox>
+                                            <Button  Grid.Row="2" Grid.Column="1"  Width="100" HorizontalAlignment="Left" Content="领取分红" Click="Click_GetDivToken"></Button>
+
+                                        </Grid>
+
+                                    </Expander>
+                                  
+                                    <Expander MinHeight="40" Margin="10">
+                                        <Expander.Header>
+                                        <TextBlock Text="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='公告历史'}" Background="WhiteSmoke" Width="1200"></TextBlock>
+                                        </Expander.Header>
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition MinHeight="50"></RowDefinition>
+                                                <RowDefinition MinHeight="50"></RowDefinition>
+                                            </Grid.RowDefinitions>
+
+                                            <Label Grid.Row="0" Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='提示：最多显示300条记录。'}"></Label>
+                                            <Button Grid.Row="0" Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='刷新'}" Width="120" HorizontalAlignment="Right" Click="Click_NoticeList"></Button>
+
+                                            <DataGrid Grid.Row="1" Grid.ColumnSpan="2" x:Name="DataGridNoticeList" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single">
+                                                <DataGrid.Columns>
+
+                                                    <!--<DataGridTextColumn Header="Index"   Binding="{Binding _noticeId}"  ElementStyle="{StaticResource TextStyle2}" IsReadOnly="True"  >
+                                                    </DataGridTextColumn>-->
+
+                                                    <DataGridTemplateColumn Header="Index"  SortMemberPath="_noticeId" Width="80">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Button Content="{Binding Path=_noticeId}" Tag="{Binding Path=TransactionHash}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Click="TagOnGotoTxId" Foreground="Blue"></Button>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+
+                                                    <DataGridTextColumn Binding="{Binding BlockNumber}"  Header="BlockNumber"  ElementStyle="{StaticResource TextStyle2}" IsReadOnly="True" Width="120" >
+                                                    </DataGridTextColumn>
+
+                                                    <DataGridTemplateColumn Header="Notice"  Width="960">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <!--<Label Content="{Binding Path=_notice}" Margin="5"></Label>-->
+                                                                <TextBlock Text="{Binding Path=_notice}" Margin="10" TextWrapping="Wrap"></TextBlock>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+
+                                        </Grid>
+
+                                    </Expander>
+
+                                    <Expander MinHeight="40" Margin="10">
+                                        <Expander.Header>
+                                            <TextBlock Text="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='出售资产转换成DivToken'}" Background="WhiteSmoke" Width="1200"></TextBlock>
+                                        </Expander.Header>
+                                        <Grid Height="200">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                                <ColumnDefinition Width="110"></ColumnDefinition>
+                                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Row="0" Grid.Column="0" Content="From Token:" HorizontalAlignment="Right"></Label>
+                                            <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ComboBoxAuctionToken" SelectionChanged="ComboBoxAuctionToken_SelectionChanged">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Width="{Binding  ElementName=ComboBoxAuctionToken, Path=Width}" >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="40" ></ColumnDefinition>
+                                                                <ColumnDefinition ></ColumnDefinition>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image Grid.Column="0" Source="{Binding ImagePath}"  Width="30" Height="30"></Image>
+                                                            <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+
+                                            <Label Grid.Row="0" Grid.Column="2" Content="To DivToken:" HorizontalAlignment="Right"></Label>
+                                            <Label Grid.Row="0" Grid.Column="3" Name="LabelSellToToken" HorizontalAlignment="Left">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="40" ></ColumnDefinition>
+                                                        <ColumnDefinition ></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{Binding ImagePath}"  Width="30" Height="30"></Image>
+                                                    <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                </Grid>
+                                            </Label>
+
+                                            <Label Grid.Row="1" Grid.Column="0" Content="From Token Amount:" HorizontalAlignment="Right"></Label>
+                                            <Label Grid.Row="1" Grid.Column="1" Name="LabelFromTokenAmount"  ></Label>
+                                            <Label Grid.Row="2" Grid.Column="0" Content="Min Auction Amount:" HorizontalAlignment="Right"></Label>
+                                            <Label Grid.Row="2" Grid.Column="1" Name="LabelMinAuctionmount" ></Label>
+
+                                            <Label Grid.Row="2" Grid.Column="2" Content="DutchAuction:" HorizontalAlignment="Right"></Label>
+                                            <Button Grid.Row="2" Grid.Column="3" Name="ButtonDutchAuction22"  Click="Click_GoToAddress" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  Foreground="Blue" Grid.ColumnSpan="2" HorizontalAlignment="Left"></Button>
+                                            
+                                            <Button  Grid.Row="3" Grid.Column="1"  Width="100" HorizontalAlignment="Left" Content="拍卖" Click="Click_DutchAuction"></Button>
+
+                                        </Grid>
+                                    </Expander>
+                                    
+                                    <Expander MinHeight="40" Margin="10">
+                                        <Expander.Header>
+                                            <TextBlock Text="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='管理员操作'}" Background="WhiteSmoke" Width="1200"></TextBlock>
+                                        </Expander.Header>
+                                        
+                                        <TabControl Height="300" Margin="0,10">
+                                            <TabItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='1，挖矿(增加份额)'}">
+
+                                                <Grid Margin="10" Height="250" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"></ColumnDefinition>
+                                                        <ColumnDefinition></ColumnDefinition>
+                                                        <ColumnDefinition Width="160"></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition ></RowDefinition>
+                                                        <RowDefinition ></RowDefinition>
+                                                        <RowDefinition Height="2*"></RowDefinition>
+                                                        <RowDefinition  Height="50"></RowDefinition>
+                                                    </Grid.RowDefinitions>
+                                                    <Label Grid.Row="0" Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='新增数量：'}" HorizontalAlignment="Right"></Label>
+                                                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="TextBoxMintAmount" Text="1.0"></TextBox>
+                                                    <Label Grid.Row="1" Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='接受地址：'}" HorizontalAlignment="Right"></Label>
+                                                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="TextBoxMintToAddress" Text=""></TextBox>
+                                                    <Label Grid.Row="2" Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='挖矿公告：'}" HorizontalAlignment="Right"></Label>
+                                                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="TextBoxMintNotice" Text="why mint?" Height="90" TextWrapping="Wrap" VerticalContentAlignment="Top"  AcceptsReturn="True"  VerticalScrollBarVisibility="Visible"></TextBox>
+                                                    <Button Grid.Row="3" Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='执行挖矿'}" Width="120" HorizontalAlignment="Left" Click="Click_Mint"></Button>
+                                                </Grid>
+
+                                            </TabItem>
+
+                                            <TabItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='2，执行分红'}">
+
+                                                <Grid Margin="10" Height="100">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"></ColumnDefinition>
+                                                        <ColumnDefinition></ColumnDefinition>
+                                                        <ColumnDefinition Width="160"></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition ></RowDefinition>
+                                                        <RowDefinition  Height="50"></RowDefinition>
+                                                    </Grid.RowDefinitions>
+                                                    <Label Grid.Row="0" Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='分红数量：'}" HorizontalAlignment="Right"></Label>
+                                                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="TextBoxDivAmount" Text="1.0"></TextBox>
+                                                    <Button Grid.Row="1" Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='执行分红'}" Width="120" HorizontalAlignment="Left" Click="Click_DistributeDividends"></Button>
+                                                </Grid>
+
+
+                                            </TabItem>
+
+                                            <TabItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='3，发布公告'}">
+
+                                                <Grid Margin="10" Height="250" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"></ColumnDefinition>
+                                                        <ColumnDefinition></ColumnDefinition>
+                                                        <ColumnDefinition Width="160"></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition></RowDefinition>
+                                                        <RowDefinition Height="50"></RowDefinition>
+                                                    </Grid.RowDefinitions>
+
+                                                    <Label Grid.Row="0" Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='公告：'}" HorizontalAlignment="Right"></Label>
+                                                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="TextBoxCommonNotice" Text="some info?" Height="180" TextWrapping="Wrap" VerticalContentAlignment="Top"  AcceptsReturn="True"  VerticalScrollBarVisibility="Visible"></TextBox>
+                                                    <Button Grid.Row="1" Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='执行发布'}" Width="120" HorizontalAlignment="Left" Click="Click_PublishNotice"></Button>
+                                                </Grid>
+
+
+                                            </TabItem>
+
+                                            <TabItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='4，设置Token图标'}">
+
+                                                <Grid Margin="10" Height="100">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200"></ColumnDefinition>
+                                                        <ColumnDefinition></ColumnDefinition>
+                                                        <ColumnDefinition Width="160"></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition ></RowDefinition>
+                                                        <RowDefinition Height="50"></RowDefinition>
+                                                    </Grid.RowDefinitions>
+                                                    <Label Grid.Row="0" Grid.Column="0" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='图标文件：'}" HorizontalAlignment="Right"></Label>
+                                                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="TextBoxIconImageFile11" Text="" ></TextBox>
+                                                    <Button Grid.Row="0" Grid.Column="2"  Content="Select Image File" Click="Click_SelectImageFile11"></Button>
+                                                    <Button Grid.Row="1" Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='更新图标'}" Width="120" HorizontalAlignment="Left" Click="Click_SetIcon"></Button>
+                                                </Grid>
+
+
+                                            </TabItem>
+
+                                        </TabControl>
+
+                                    </Expander>
+
+                                </StackPanel>
+
+                            </ScrollViewer>
+
+                        </TabItem>
+
+                        <TabItem>
+                            <TabItem.Header>
+                                <Grid MinWidth="120" Height="25">
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='New Share Token'}" Margin="0"></Label>
+                                </Grid>
+                            </TabItem.Header>
+
+                            <Grid Width="1200" Height="550" VerticalAlignment="Top" Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"></ColumnDefinition>
+                                    <ColumnDefinition ></ColumnDefinition>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <!--<RowDefinition></RowDefinition>-->
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition Height="4*"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Content="name:" HorizontalAlignment="Right"></Label>
+                                <TextBox Grid.Row="0" Grid.Column="1" x:Name="TextBoxName" MaxLength="64"></TextBox>
+
+                                <Label Grid.Row="1" Grid.Column="0" Content="symbol:" HorizontalAlignment="Right"></Label>
+                                <TextBox Grid.Row="1" Grid.Column="1" x:Name="TextBoxSymbol" MaxLength="16"></TextBox>
+
+                                <Label Grid.Row="2" Grid.Column="0" Content="decimals:" HorizontalAlignment="Right"></Label>
+                                <TextBox Grid.Row="2" Grid.Column="1" x:Name="TextBoxDecimals" MaxLength="2"></TextBox>
+
+                                <Label Grid.Row="3" Grid.Column="0" Content="Div Token:" HorizontalAlignment="Right"></Label>
+                                <ComboBox  Name="ComboBoxDivToken23"    Grid.Row="3" Grid.Column="1">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Width="{Binding  ElementName=ComboBoxDivToken23, Path=Width}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="60"></ColumnDefinition>
+                                                    <ColumnDefinition ></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <Image  Grid.Column="0" Source="{Binding ImagePath}" Height="30" Width="30"></Image>
+                                                <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <!--<Grid Grid.Row="3" Grid.Column="1" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="400"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" x:Name="TextBoxDivToken" MaxLength="43" LostFocus="LostFocus_DivToken"></TextBox>
+                                    <Label Grid.Column="1" x:Name="LabelDivTokenName"></Label>
+                                    <Label Grid.Column="2" x:Name="LabelDivTokenSymbol"></Label>
+                                </Grid>-->
+
+                                <!--<Button Grid.Row="3" Grid.Column="2" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='检测'}" Click="Click_CheckErc20TokenAddress"></Button>-->
+
+                                <Label Grid.Row="4" Grid.Column="0" Content="Admin Address:" HorizontalAlignment="Right"></Label>
+                                <TextBox Grid.Row="4" Grid.Column="1" x:Name="TextBoxAdmin" MaxLength="43"></TextBox>
+
+                                <Label Grid.Row="5" Grid.Column="0" Content="SuperAdmin Address:" HorizontalAlignment="Right"></Label>
+                                <TextBox Grid.Row="5" Grid.Column="1" x:Name="TextBoxSuperAdmin" MaxLength="43"></TextBox>
+
+                                <!--<Label Grid.Row="6" Grid.Column="0" Content="Icon Image:" HorizontalAlignment="Right"></Label>
+                                <TextBox Grid.Row="6" Grid.Column="1" x:Name="TextBoxIcon" ></TextBox>
+                                <Button Grid.Row="6" Grid.Column="2"  Content="Select Icon Image" Click="Click_SelectIconImage"></Button>-->
+
+                                <Label Grid.Row="6" Grid.Column="0" Content="Notice:" HorizontalAlignment="Right"></Label>
+                                <TextBox Grid.Row="6" Grid.Column="1" x:Name="TextBoxNotice"  TextWrapping="Wrap" AcceptsReturn="True"  VerticalScrollBarVisibility="Visible" Height="180" VerticalContentAlignment="Top"></TextBox>
+
+                                <Button Grid.Row="7" Grid.Column="1" Width="200" HorizontalAlignment="Left" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='创建ShareToken合约'}" Click="Click_CreateContract"></Button>
+
+                            </Grid>
+                        </TabItem>
+
+                    </TabControl>
+
+                </TabItem>
+
+                <TabItem Width="160">
+
+                    <TabItem.Header >
+                        <Grid HorizontalAlignment="Left" Width="150">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Source="Image\Auction.png"  Width="30" Height="30"></Image>
+
+                            <Label Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='Dutch Auction'}" ></Label>
+                        </Grid>
+                    </TabItem.Header>
+
+                    <TabControl Name="TabControlAuction"  Margin="0,5">
+                        <TabControl.Resources>
+                            <Style TargetType="{x:Type TabPanel}">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </TabControl.Resources>
+
+                        <TabItem Width="200">
+                            <TabItem.Header>
+                                <!--<Grid HorizontalAlignment="Left" Width="150" Margin="315,0,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="32"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Source="Image\Auction.png"  Width="30" Height="30"></Image>
+                                    <Label Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='拍卖列表'}" ></Label>
+                                </Grid>-->
+                                <Label Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='拍卖列表'}"></Label>
+                            </TabItem.Header>
+
+                            <Grid Margin="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0" HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0" Content="每次降价比例:"></Label>
+                                    <Label Grid.Column="1"  x:Name="LabelLessPerBlocks"></Label>
+
+                                    <Label Grid.Column="3" Content="降价区块间隔:"></Label>
+                                    <Label Grid.Column="4"  x:Name="LabelWaitBlocks"></Label>
+
+                                    <Label Grid.Column="6" Content="拍卖的Token(TokenSell):"></Label>
+                                    <ComboBox Grid.Column="7"  x:Name="ComboBoxTokenSell">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Width="{Binding  ElementName=ComboBoxTokenSell, Path=Width}" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="40" ></ColumnDefinition>
+                                                        <!--<ColumnDefinition Width="100"></ColumnDefinition>-->
+                                                        <ColumnDefinition ></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{Binding ImagePath}"  Width="30" Height="30"></Image>
+                                                    <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                    <!--<Label Grid.Column="2" Content="{Binding TokenAddress}"></Label>-->
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+
+                                    <Label Grid.Column="9" Content="支付的Token(TokenBuy):"></Label>
+                                    <ComboBox Grid.Column="10"  x:Name="ComboBoxTokenBuy">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Width="{Binding  ElementName=ComboBoxTokenBuy, Path=Width}" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="40" ></ColumnDefinition>
+                                                        <!--<ColumnDefinition Width="100"></ColumnDefinition>-->
+                                                        <ColumnDefinition ></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{Binding ImagePath}" Width="30" Height="30"></Image>
+                                                    <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                    <!--<Label Grid.Column="2" Content="{Binding TokenAddress}"></Label>-->
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+
+                                    <Button Grid.Column="12"  Content="刷新并过滤" Click="AuctionFilter_Click" Width="120"></Button>
+
+                                </Grid>
+
+                                <DataGrid x:Name="DataGridDutchAuctionSell" Grid.Row="1" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" SelectionMode="Single"  MinWidth="1200" MaxWidth="1800">
+                                    <DataGrid.Columns>
+
+                                        <DataGridTemplateColumn Header="Id"  MinWidth="40" SortMemberPath="_sellId">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="{Binding _sellId}" Tag="{Binding TransactionHash}" Click="TagOnGotoTransactionHash" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  Foreground="Blue">
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="TokenSell"  MinWidth="90" SortMemberPath="TokenSellSymbol">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Tag="{Binding _tokenSell}" Click="TagOnGotoAddress"  Foreground="Blue" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                                       <Grid Margin="2" >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="36"></ColumnDefinition>
+                                                                <ColumnDefinition></ColumnDefinition>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image Grid.Column="0" Source="{Binding TokenSellImagePath}" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
+                                                            <TextBlock Grid.Column="1" Text ="{Binding TokenSellSymbol}" VerticalAlignment="Center" />
+                                                        </Grid>   
+                                                    </Button>                                                  
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTextColumn   Binding="{Binding curTokenSellAmount}"  MinWidth="160" IsReadOnly="True" ElementStyle="{StaticResource NumberStyle}" >
+                                            <DataGridTextColumn.Header>
+                                                <TextBlock Text ="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='当前剩余TokenSell数量'}"  TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+
+                                        <DataGridTextColumn   Binding="{Binding tokenSellAmountBuyMin}"  MinWidth="160" IsReadOnly="True" ElementStyle="{StaticResource NumberStyle}" >
+                                            <DataGridTextColumn.Header>
+                                                <TextBlock Text ="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='TokenSell最小购买数量'}"  TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+
+                                        <DataGridTemplateColumn Header="TokenBuy"  MinWidth="90" SortMemberPath="TokenBuySymbol">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Tag="{Binding _tokenBuy}" Click="TagOnGotoAddress"  MinWidth="80"  Foreground="Blue" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"  >
+                                                        <Grid Margin="2"   MinWidth="80">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="36"></ColumnDefinition>
+                                                                <ColumnDefinition></ColumnDefinition>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Image Grid.Column="0" Source="{Binding TokenBuyImagePath}" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
+                                                            <TextBlock Grid.Column="1" Text ="{Binding TokenBuySymbol}" VerticalAlignment="Center" />
+                                                        </Grid>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn  MinWidth="250" SortMemberPath="next1Price">
+                                            <DataGridTemplateColumn.Header>
+                                                <TextBlock Text ="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='下1个区块价格[1TokenSell=?TokenBuy]'}"  TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                            </DataGridTemplateColumn.Header>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>                                                   
+                                                      <Grid Margin="2" >
+                                                         <Grid.ColumnDefinitions>
+                                                           <ColumnDefinition Width="60"></ColumnDefinition>
+                                                           <ColumnDefinition Width="20"></ColumnDefinition>
+                                                           <ColumnDefinition></ColumnDefinition>
+                                                          </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text ="{Binding next1Block}" VerticalAlignment="Center"  HorizontalAlignment="Center" Foreground="Green" />
+                                                        <TextBlock Grid.Column="1" Text =" : " VerticalAlignment="Center"  HorizontalAlignment="Center"/>
+                                                        <TextBlock Grid.Column="2" Text ="{Binding next1Price}" VerticalAlignment="Center" HorizontalAlignment="Right" />                                                         
+                                                     </Grid>                                                 
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn  MinWidth="50">
+                                            <DataGridTemplateColumn.Header>
+                                                <TextBlock Text ="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='下2个区块价格[1TokenSell=?TokenBuy]'}"  TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                            </DataGridTemplateColumn.Header>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="2" >
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="60"></ColumnDefinition>
+                                                            <ColumnDefinition Width="20"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text ="{Binding next2Block}" VerticalAlignment="Center" HorizontalAlignment="Center"   Foreground="Green"/>
+                                                        <TextBlock Grid.Column="1" Text =" : " VerticalAlignment="Center"  HorizontalAlignment="Center"/>
+                                                        <TextBlock Grid.Column="2" Text ="{Binding next2Price}" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn  MinWidth="50">
+                                            <DataGridTemplateColumn.Header>
+                                                <TextBlock Text ="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='下3个区块价格[1TokenSell=?TokenBuy]'}"  TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                                            </DataGridTemplateColumn.Header>
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="2" >
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="60"></ColumnDefinition>
+                                                            <ColumnDefinition Width="20"></ColumnDefinition>
+                                                            <ColumnDefinition></ColumnDefinition>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text ="{Binding next3Block}" VerticalAlignment="Center" HorizontalAlignment="Center"  Foreground="Green" />
+                                                        <TextBlock Grid.Column="1" Text =" : " VerticalAlignment="Center"  HorizontalAlignment="Center"/>
+                                                        <TextBlock Grid.Column="2" Text ="{Binding next3Price}" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="更新时间" MinWidth="160" MaxWidth="160" SortMemberPath="UpdateTime">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="{Binding UpdateTime}"  Click="UpdateTime_Click"  Margin="5,2" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="Blue" HorizontalAlignment="Left"></Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Width="100" MinWidth="100" MaxWidth="100">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                     <Button Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='购买'}"  Click="OnBuyDutchAuctionToken"  Margin="5,2"></Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </Grid>
+
+                        </TabItem>
+
+                        <TabItem Width="200">
+                            <TabItem.Header>
+                                <!--<Grid HorizontalAlignment="Left" Width="150">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="32"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Source="Image\Auction.png"  Width="30" Height="30"></Image>
+                                    <Label Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='拍卖发布'}" ></Label>
+                                </Grid>-->
+                                <Label Grid.Column="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='拍卖发布'}" ></Label>
+                            </TabItem.Header>
+
+
+                            <Grid VerticalAlignment="Top" Margin="10"  Background="WhiteSmoke" Width="800">
+
+                                <Grid Margin="2" Height="550">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="300" ></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+
+                                    <Border  Grid.Row="1" Grid.Column="0"  Background="White"></Border>
+                                    <Border  Grid.Row="3" Grid.Column="0" Background="White"></Border>
+                                    <Border  Grid.Row="5" Grid.Column="0"  Background="White"></Border>
+                                    <Border  Grid.Row="7" Grid.Column="0"  Background="White"></Border>
+                                    <Border  Grid.Row="9" Grid.Column="0"  Background="White"></Border>
+
+                                    <Border  Grid.Row="0" Grid.Column="1"  Background="White"></Border>
+                                    <Border  Grid.Row="2" Grid.Column="1" Background="White"></Border>
+                                    <Border  Grid.Row="4" Grid.Column="1"  Background="White"></Border>
+                                    <Border  Grid.Row="6" Grid.Column="1"  Background="White"></Border>
+                                    <Border  Grid.Row="8" Grid.Column="1"  Background="White"></Border>
+                                    <Border  Grid.Row="10" Grid.Column="1"  Background="White"></Border>
+
+
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='拍卖人(Seller):'}" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right"></Label>
+                                    <ComboBox  x:Name="ComboBoxSeller"  Grid.Row="0" Grid.Column="1" SelectionChanged="ComboBoxSeller_SelectionChanged">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Width="{Binding  ElementName=ComboBoxSeller, Path=Width}">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="150"></ColumnDefinition>
+                                                        <ColumnDefinition ></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Grid.Column="0" Content="{Binding AddressAlias}"></Label>
+                                                    <Label Grid.Column="1" Content="{Binding Address}" VerticalAlignment="Center"></Label>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>                                    
+
+                                    <Label Content="TokenSell:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right"></Label>
+                                    <ComboBox  Grid.Row="1" Grid.Column="1" x:Name="ComboBoxTokenSell_1"  SelectionChanged="ComboBoxTokenSell_1_SelectionChanged">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Width="{Binding  ElementName=ComboBoxTokenSell_1, Path=Width}" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="40" ></ColumnDefinition>
+                                                        <ColumnDefinition ></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{Binding ImagePath}"  Width="30" Height="30"></Image>
+                                                    <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>                                    
+
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='TokenSell最小拍卖数量:'}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right"></Label>
+                                    <Label x:Name="LabelTokenSellMinAmount" Grid.Row="2" Grid.Column="1" ></Label>
+
+
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='Seller的TokenSell余额:'}" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right"></Label>
+                                    <Label x:Name="LabelTokenBalance" Grid.Row="3" Grid.Column="1" ></Label>
+
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='Seller的ETH余额:'}" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right"></Label>
+                                    <Label x:Name="LabelEthBalance" Grid.Row="4" Grid.Column="1" ></Label>
+
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='拍卖TokenSell的数量:'}" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right"></Label>
+                                    <TextBox x:Name="TextBoxSellTokenAmount" Grid.Row="5" Grid.Column="1" LostFocus="TextBoxSellTokenAmount_LostFocus"></TextBox>
+
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='TokenBuy:'}" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right"></Label>
+                                    <ComboBox  Grid.Row="6" Grid.Column="1" x:Name="ComboBoxTokenBuy_1">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Width="{Binding  ElementName=ComboBoxTokenBuy_1, Path=Width}" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="40" ></ColumnDefinition>
+                                                        <ColumnDefinition ></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image Grid.Column="0" Source="{Binding ImagePath}"  Width="30" Height="30"></Image>
+                                                    <Label Grid.Column="1" Content="{Binding Symbol}"></Label>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+
+                                    <Label Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='收取TokenBuy的最高数量:'}" Grid.Row="7" Grid.Column="0" HorizontalAlignment="Right"></Label>
+                                    <TextBox x:Name="TextBoxTokenBuyMaxAmount" Grid.Row="7" Grid.Column="1" TextChanged="TextBoxTokenBuyMaxAmount_TextChanged"></TextBox>
+
+                                    <Label Content="Highest Price(1 TokenSell = ? TokenBuy):" Grid.Row="8" Grid.Column="0" HorizontalAlignment="Right"></Label>
+                                    <Label  x:Name="LabelMaxPrice" Content="*" Grid.Row="8" Grid.Column="1"></Label>
+
+                                    <Label Grid.Row="9" Grid.Column="1" x:Name="LabelLess" Tag="1" Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='提示：荷兰拍卖，价格每间隔6个区块降低千分之3。'}"  HorizontalAlignment="Left"></Label>
+
+                                    <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" x:Name="ButtonDutchAuction"  Content="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='拍卖'}" Click="DoDutchAuction" ></Button>
+
+                                </Grid>
+                            </Grid>
+
+                        </TabItem>
+
+                    </TabControl>                    
+
+                </TabItem>
+
+                <TabItem >
+                    <TabItem.Header>
+                        <StackPanel x:Name="StackPanelMenu" Orientation="Horizontal"  Margin="0">
+
+                            <Button Click="OnAccountAddress"  Width="120" VerticalAlignment="Center" Margin="3,0">
+                                <Grid  HorizontalAlignment="Left" Width="110">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="32"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Image  Grid.Column="0" Source="Image\account0.jpg" Width="30" Height="30"></Image>
+                                    <TextBlock Grid.Column="1" Text="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='账号'}" VerticalAlignment="Center"></TextBlock>
+                                </Grid>
+                            </Button>
+
+                            <Button Click="OnAddToken"  Width="120" VerticalAlignment="Center" Margin="3,0">
+                                <Grid  HorizontalAlignment="Left"  Width="110">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="32"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Image  Grid.Column="0" Source="Image\token.png" Width="30" Height="30"></Image>
+                                    <TextBlock Grid.Column="1" Text="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='Token'}" VerticalAlignment="Center"></TextBlock>
+                                </Grid>
+                            </Button>
+
+                            <Button x:Name="ButtonTools"  Click="ButtonTools_OnClick"  VerticalAlignment="Center" Margin="3,0">
+                                <Grid  HorizontalAlignment="Left"  Width="110">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="35"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Image  Grid.Column="0" Source="Image\tools.png" Width="30" Height="30"></Image>
+                                    <Menu x:Name="MenuTools"  Grid.Column="1"   HorizontalAlignment="Center" Background="{Binding ElementName=ButtonTools, Path=Background}" >
+                                        <MenuItem Name="MenuItemTools" Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='系统和工具'}"  Height="30"  >
+
+                                            <MenuItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='Dapp Client'}" Click="ButtonGameList_OnClick">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\youxi.png"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <Separator></Separator>
+
+                                            <!--<MenuItem Header="账号" Click="OnAccountAddress">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\account.jpg"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>-->
+
+                                            <MenuItem Header="Transfer" Click="OnTransfer">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\s_transfer.png"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <Separator></Separator>
+
+                                            <MenuItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='事务执行状态'}" Click="OnTxExeStatus">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\zhuangtai.png"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <Separator></Separator>
+
+                                            <MenuItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='测试辅助工具'}" Click="OnDeployment">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\deployment.png"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            
+                                            <Separator></Separator>
+
+                                            <MenuItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='Web3 Url'}" Click="OnWeb3Url">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\web3.png"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='数据库'}" Click="OnDataBase">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\database.png"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='多语言'}" Click="OnLanguage">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\multi-language.ico"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='通知'}" Click="OnNotice">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\Notice.jpg"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <MenuItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='关于'}" Click="OnAbout">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\guanyu.png"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                            <Separator></Separator>
+
+                                            <MenuItem Header="{Binding Converter={ StaticResource LanguageHelper}, ConverterParameter='退出'}" Click="OnSysExit">
+                                                <MenuItem.Icon>
+                                                    <Image Source="Image\tuichu.png"/>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+
+                                        </MenuItem>
+                                    </Menu>
+                                </Grid>
+                            </Button>
+
+                        </StackPanel>
+                    </TabItem.Header>
+                </TabItem>
+
+            </TabControl>
+
+            <Border  Grid.Row="1" Background="Blue"></Border>
+            <local_share:UserControlStatusBar Grid.Row="2" x:Name="UcStatusBar" VerticalAlignment="Center" />
+
+        </Grid>
+
+    </Grid>
+</Window>
